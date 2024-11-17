@@ -15,6 +15,17 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECURE_SSL_REDIRECT = True  # Redirige todas las solicitudes HTTP a HTTPS
+SESSION_COOKIE_SECURE = True  # Solo enviar cookies de sesión a través de HTTPS
+CSRF_COOKIE_SECURE = True  # Solo enviar cookies CSRF a través de HTTPS
+
+
+SECURE_HSTS_SECONDS = 31536000  # 1 año
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -86,6 +97,12 @@ DATABASES = {
     }
 }
 
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+]
 
 
 # Password validation
