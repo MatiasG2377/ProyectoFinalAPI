@@ -1,5 +1,5 @@
 from rest_framework.routers import DefaultRouter
-from inventario.API.vistas import categoriaViewSet, productoViewSet, proveedorViewSet, productoProveedorViewSet, clienteViewSet, ventaViewSet, articuloVentaViewSet, movimientoInventarioViewSet, loteViewSet
+from inventario.API.vistas import categoriaViewSet, productoViewSet, proveedorViewSet, productoProveedorViewSet, clienteViewSet, ventaViewSet, articuloVentaViewSet, movimientoInventarioViewSet, loteViewSet, UserViewSet
 
 router = DefaultRouter()
 router.register('categorias', categoriaViewSet, basename='categoria')
@@ -28,3 +28,6 @@ urlpatterns = router.urls
 
 router.register('lotes', loteViewSet, basename='lote')
 urlpatterns = router.urls 
+
+router.register('usuarios',UserViewSet, basename= 'usuario')
+urlpatterns = router.urls

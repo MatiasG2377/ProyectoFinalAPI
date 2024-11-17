@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from inventario.models import Categoria, Proveedor, Producto, ProductoProveedor, Cliente, Venta, ArticuloVenta, MovimientoInventario, Lote
 
 class categoriaSerializer(serializers.ModelSerializer):
@@ -45,3 +46,35 @@ class loteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lote
         fields = '__all__'
+
+
+#! Manejo del login
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'password']
+        extra_kwargs = {
+            'password': {'write_only': True}  # Para que la contraseña no sea incluida en las respuestas
+        }
+
+    def create(self, validated_data):
+        # Extraer la contraseña
+        password = validated_data.pop('password', None)
+        # Crear el usuario con los datos validados
+        user = super().create(validated_data)
+        # Asignar y hashear la contraseña
+        if password:
+            user.set_password(password)
+            user.save()
+        return user
+
+    def update(self, instance, validated_data):
+        # Extraer la contraseña si está presente
+        password = validated_data.pop('password', None)
+        # Actualizar los demás campos
+        user = super().update(instance, validated_data)
+        # Asignar y hashear la contraseña si se proporciona
+        if password:
+            user.set_password(password)
+            user.save()
+        return user

@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from inventario.models import Categoria, Proveedor, Producto, ProductoProveedor, Cliente, Venta, ArticuloVenta, MovimientoInventario, Lote
-from inventario.API.serializador import categoriaSerializer, productoSerializer, proveedorSerializer, productoProveedorSerializer, clienteSerializer, ventaSerializer, articuloVentaSerializer, movimientoInventarioSerializer, loteSerializer
+from inventario.API.serializador import categoriaSerializer, productoSerializer, proveedorSerializer, productoProveedorSerializer, clienteSerializer, ventaSerializer, articuloVentaSerializer, movimientoInventarioSerializer, loteSerializer, UserSerializer
+from django.contrib.auth.models import User
 
 class categoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
@@ -37,3 +38,7 @@ class movimientoInventarioViewSet(viewsets.ModelViewSet):
 class loteViewSet(viewsets.ModelViewSet):
     queryset = Lote.objects.all()
     serializer_class = loteSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

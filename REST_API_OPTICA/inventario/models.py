@@ -59,11 +59,11 @@ class Producto(models.Model):
     proveedores_producto = models.ManyToManyField(Proveedor, through='ProductoProveedor') # Define relación muchos a muchos entre proveedor y producto a través de la tabla "ProductoProveedor"
     ultima_venta_producto = models.DateTimeField(blank=True, null=True) #Ultima venta del producto
 
-    def clean(self):
-        if self.stock_minimo > self.stock_maximo:
-            raise ValidationError("El stock mínimo no puede ser mayor que el stock máximo.")
-        if self.cantidad < 0:
-            raise ValidationError("La cantidad en stock no puede ser negativa.")
+def clean(self):
+    if self.minimo_producto > self.maximo_producto:
+        raise ValidationError("El stock mínimo no puede ser mayor que el stock máximo.")
+    if self.cantidad_producto < 0:
+        raise ValidationError("La cantidad en stock no puede ser negativa.")
 
     def __str__(self):
         return f"{self.nombre_producto}"
@@ -71,7 +71,7 @@ class Producto(models.Model):
 
 # Relación entre Productos y Proveedores
 class ProductoProveedor(models.Model):
-    porducto_productoProveedor = models.ForeignKey(Producto, on_delete=models.CASCADE) # ForeignKey del Producto
+    producto_productoProveedor  = models.ForeignKey(Producto, on_delete=models.CASCADE) # ForeignKey del Producto
     proveedor_productoProveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE) # ForeignKey del proveedor
     costo_productoProveedor = models.DecimalField(max_digits=10, decimal_places=2) # Registrar el costo de adquisición del producto
     tiempo_entrega_productoProveedor = models.IntegerField(help_text="Días para entrega", blank=True, null=True) # Registrar el tiempo en dpias de entrega
