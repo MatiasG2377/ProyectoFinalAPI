@@ -58,14 +58,12 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        # Extraer la contraseña
-        password = validated_data.pop('password', None)
-        # Crear el usuario con los datos validados
-        user = super().create(validated_data)
-        # Asignar y hashear la contraseña
-        if password:
-            user.set_password(password)
-            user.save()
+        user = User.objects.create(
+            username=validated_data['username'],
+            email=validated_data.get('email', '')
+        )
+        user.set_password(validated_data['password'])  # Hashea la contraseña
+        user.save()
         return user
 
     def update(self, instance, validated_data):

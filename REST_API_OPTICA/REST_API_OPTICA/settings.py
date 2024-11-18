@@ -11,21 +11,22 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECURE_SSL_REDIRECT = True  # Redirige todas las solicitudes HTTP a HTTPS
-SESSION_COOKIE_SECURE = True  # Solo enviar cookies de sesión a través de HTTPS
-CSRF_COOKIE_SECURE = True  # Solo enviar cookies CSRF a través de HTTPS
+SECURE_SSL_REDIRECT = False  # Redirige todas las solicitudes HTTP a HTTPS
+SESSION_COOKIE_SECURE = False  # Solo enviar cookies de sesión a través de HTTPS
+CSRF_COOKIE_SECURE = False  # Solo enviar cookies CSRF a través de HTTPS
 
 
-SECURE_HSTS_SECONDS = 31536000  # 1 año
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_SECONDS = 0  # 1 año
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+SECURE_HSTS_PRELOAD = False
 
 
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -49,8 +50,31 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'inventario'
+    'rest_framework_simplejwt.token_blacklist',
+    'inventario',
+    'corsheaders',
+    'django_extensions'
 ]
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=12),  # Duración del token de acceso
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Duración del token de refresco
+    'ROTATE_REFRESH_TOKENS': True,  # Generar un nuevo token de refresco al usarlo
+    'BLACKLIST_AFTER_ROTATION': True,  # Invalida los tokens antiguos
+    'AUTH_HEADER_TYPES':('Bearer',),
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT Authentication
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,7 +84,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    'corsheaders.middleware.CorsMiddleware'
+] 
 
 ROOT_URLCONF = 'REST_API_OPTICA.urls'
 
