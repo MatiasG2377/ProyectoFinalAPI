@@ -26,7 +26,7 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = False
 SECURE_HSTS_PRELOAD = False
 
 
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'inventario',
+    'corsheaders',
     'django_extensions'
 ]
 
@@ -60,6 +61,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Duración del token de refresco
     'ROTATE_REFRESH_TOKENS': True,  # Generar un nuevo token de refresco al usarlo
     'BLACKLIST_AFTER_ROTATION': True,  # Invalida los tokens antiguos
+    'AUTH_HEADER_TYPES':('Bearer',),
 }
 
 REST_FRAMEWORK = {
@@ -82,7 +84,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    'corsheaders.middleware.CorsMiddleware'
+] 
 
 ROOT_URLCONF = 'REST_API_OPTICA.urls'
 

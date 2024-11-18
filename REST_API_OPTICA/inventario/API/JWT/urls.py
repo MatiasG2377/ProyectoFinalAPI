@@ -1,6 +1,6 @@
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenBlacklistView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.urls import path
-from inventario.API.vistas import RegisterView
+from inventario.API.vistas import RegisterView, LogoutView
 
 urlpatterns = [
     # Login - obtener tokens (access y refresh)
@@ -8,7 +8,7 @@ urlpatterns = [
     # Refrescar token
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     # Logout - invalidar token
-    path('logout/', TokenBlacklistView.as_view(), name='token_blacklist'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     # Registro
     path('register/',RegisterView.as_view(), name= 'register')
 ]
